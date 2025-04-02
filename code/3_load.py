@@ -41,4 +41,11 @@ def upload_file(file_name, bucket_name, object_name=None):
 
 if __name__ == '__main__':
     #TODO: Write your load code here (remove pass first)
-    pass
+    sample_transformed_data = pd.DataFrame({
+        'City': ['New York', 'Los Angeles', 'Chicago'],
+        'State': ['NY', 'CA', 'IL'],
+        'normalized_salary': [60000, 50000, 55000],
+        'year': [2024, 2024, 2024]
+    })
+    
+    load_transformed_data(sample_transformed_data)
