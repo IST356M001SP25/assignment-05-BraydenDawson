@@ -23,3 +23,15 @@ Examples:
 
 `--- Reflection Below This Line ---`
 
+Throughout this assignment, I learned how to build an ETL pipeline using pandas to process and transform data. I merged survey data with cost of living data, normalized salaries, and created pivot table reports. This gave me hands-on experience with data cleaning tasks, such as standardizing city names, currency formatting, and date extraction. These processes reinforced my understanding of how to manipulate data using pandas for more complex transformations.
+
+One of the biggest challenges I faced was merging datasets that had inconsistent formats, especially with city names and state abbreviations. Ensuring that data points aligned properly was tricky, especially when dealing with missing values. I also found the cost of living adjustment and creating accurate pivot tables difficult, as I needed to be sure the calculations were correct.
+
+In the future, I need more practice with merging data that has inconsistent formats, handling missing data, and working with pivot tables for more complex aggregations. Debugging data transformations and ensuring that the right cleaning processes are applied to large datasets is another area for improvement.
+
+Going forward, I plan to focus on improving my skills in data merging, working with pivot tables, and debugging, which will help me better manage larger datasets and create more insightful reports.
+
+
+
+
+        
