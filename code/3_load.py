@@ -6,12 +6,11 @@ from botocore.exceptions import ClientError
 def upload_file(file_name, bucket_name, object_name=None):
     """Upload a file to an S3 bucket
 
-    :param file_name: Is a full path to the file to upload e.g. cache/file.csv 
-    :param bucket: Bucket to upload to. this should be ist356yournetid
-    :param object_name: S3 object name. this should be the file name without the cache/ prefix file.csv
+    :param file_name: Full path to the file to upload (e.g., cache/file.csv) 
+    :param bucket_name: Bucket to upload to (this should be your S3 bucket name)
+    :param object_name: S3 object name (this should be the file name without the cache/ prefix, e.g., file.csv)
     :return: True if file was uploaded, else False
     """
-    # create resource
     s3 = boto3.resource('s3', 
         endpoint_url='https://play.min.io:9000',
         aws_access_key_id='Q3AM3UQ867SPQQA43P2F',
@@ -21,11 +20,11 @@ def upload_file(file_name, bucket_name, object_name=None):
         verify=False
     ).meta.client
 
-    # create bucket if it does not exist
+    # Create the bucket if it does not exist
     response = s3.list_buckets()
     buckets = [bucket['Name'] for bucket in response['Buckets']]
     if bucket_name not in buckets:
-        s3.create_bucket(Bucket=bucket_name)   
+        s3.create_bucket(Bucket=bucket_name)
 
     # If S3 object_name was not specified, use file_name
     if object_name is None:
@@ -35,17 +34,30 @@ def upload_file(file_name, bucket_name, object_name=None):
     try:
         response = s3.upload_file(file_name, bucket_name, object_name)
     except ClientError as e:
-        print("ERROR",e)
+        print(f"ERROR: {e}")
         return False
     return True
 
+
+# Function to load and upload the reports and transformed data
+def load_transformed_data():
+    # Assuming 'transformed_data' is the dataframe after transformation
+    # Here is an example transformed dataset. You should replace this with your actual transformed data.
+    transformed_data = pd.read_csv('cache/survey_dataset.csv')  # Load the transformed dataset (from the cache)
+
+    # Report 1: Save and upload the annual salary adjusted by location and age
+    report_age = pd.read_csv('cache/annual_salary_adjusted_by_location_and_age.csv')
+    upload_file('cache/annual_salary_adjusted_by_location_and_age.csv', 'ist356mafudge', 'annual_salary_adjusted_by_location_and_age.csv')
+
+    # Report 2: Save and upload the annual salary adjusted by location and education
+    report_education = pd.read_csv('cache/annual_salary_adjusted_by_location_and_education.csv')
+    upload_file('cache/annual_salary_adjusted_by_location_and_education.csv', 'ist356mafudge', 'annual_salary_adjusted_by_location_and_education.csv')
+
+    # Final transformed dataset (survey data combined with cost of living adjustments)
+    transformed_data.to_csv('cache/survey_dataset.csv', index=False)
+    upload_file('cache/survey_dataset.csv', 'ist356mafudge', 'survey_dataset.csv')
+
+
 if __name__ == '__main__':
-    #TODO: Write your load code here (remove pass first)
-    sample_transformed_data = pd.DataFrame({
-        'City': ['New York', 'Los Angeles', 'Chicago'],
-        'State': ['NY', 'CA', 'IL'],
-        'normalized_salary': [60000, 50000, 55000],
-        'year': [2024, 2024, 2024]
-    })
-    
-    load_transformed_data(sample_transformed_data)
+    # Call the load function to upload the reports to S3
+    load_transformed_data()
